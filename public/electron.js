@@ -5,6 +5,32 @@ const path = require("path");
 const url = require("url");
 const obsRecorder = require(path.join(__dirname, "../public/obsRecorder"))
 
+ipcMain.handle("recording-start", (event) => {
+  obsRecorder.start();
+  return { recording: true };
+});
+
+ipcMain.handle("recording-stop", (event) => {
+  obsRecorder.stop();
+  return { recording: false };
+});
+
+ipcMain.handle("isVirtualCamPluginInstalled", (event) => {
+  return obsRecorder.isVirtualCamPluginInstalled();
+});
+ipcMain.handle("startVirtualCam", (event) => {
+  return obsRecorder.startVirtualCam();
+});
+ipcMain.handle("stopVirtualCam", (event) => {
+  return obsRecorder.stopVirtualCam();
+});
+ipcMain.handle("installVirtualCamPlugin", (event) => {
+  return obsRecorder.installVirtualCamPlugin();
+});
+ipcMain.handle("uninstallVirtualCamPlugin", (event) => {
+  return obsRecorder.uninstallVirtualCamPlugin();
+});
+
 // Create the native browser window.
 function createWindow() {
   const mainWindow = new BrowserWindow({  
@@ -28,6 +54,20 @@ function createWindow() {
       })
     : "http://localhost:3000";
   mainWindow.loadURL(appURL);
+
+   ipcMain.handle("recording-init", (event) => {
+     obsRecorder.initialize(mainWindow);
+     return true;
+   });
+
+   ipcMain.handle("preview-init", (event, bounds) => {
+     return obsRecorder.setupPreview(mainWindow, bounds);
+   });
+
+   ipcMain.handle("preview-bounds", (event, bounds) => {
+     return obsRecorder.resizePreview(mainWindow, bounds);
+   });
+
 
   // Automatically open Chrome's DevTools in development mode.
   if (!app.isPackaged) {
