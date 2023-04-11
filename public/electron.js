@@ -3,6 +3,7 @@
 const { app, BrowserWindow, protocol, ipcMain } = require("electron");
 const path = require("path");
 const url = require("url");
+const obsRecorder = require(path.join(__dirname, "../public/obsRecorder"))
 
 // Create the native browser window.
 function createWindow() {
