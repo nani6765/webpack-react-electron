@@ -2,6 +2,7 @@ const path = require("path");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const CssMinimizerPlugin = require("css-minimizer-webpack-plugin");
+const CopyWebpackPlugin = require("copy-webpack-plugin");
 
 module.exports = {
   entry: "./src/index.js",
@@ -15,8 +16,20 @@ module.exports = {
       template: path.join(__dirname, "public", "index.html"),
     }),
     new MiniCssExtractPlugin(),
+    new CopyWebpackPlugin({
+      patterns: [
+        {
+          from: "public",
+          to: "[name][ext]",
+          noErrorOnMissing: true,
+          globOptions: {
+            ignore: ["**/index.html"],
+          },
+        },
+      ],
+    }),
   ],
-  optimization: {  // 여기부터 추가
+  optimization: { 
     minimizer: [new CssMinimizerPlugin()],  
   },
   devServer: {
