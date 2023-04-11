@@ -56,5 +56,9 @@ module.exports = {
   // pass all js files through Babel
   resolve: {
     extensions: ["*", ".js", ".jsx"],
+    modules: [
+      path.resolve(__dirname, "public"), // "public" 디렉토리에서 모듈을 찾습니다.
+      path.resolve(__dirname, "node_modules")
+    ],
   },
 };
