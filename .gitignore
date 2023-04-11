@@ -1,6 +1,6 @@
 /node_modules
 /dist
-/public
+/build
 
 yarn-debug.log*
 yarn-error.log*
